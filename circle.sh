@@ -29,6 +29,7 @@ KD="$(pwd)"
 git clone https://github.com/kdrag0n/proton-clang --depth=1 "${KD}"/clang
 COMPILER_STRING='Proton Clang (latest)'
 COMPILER_TYPE='clang'
+OUTDIR=$KD/out
 
 # Clang is annoying
 PATH="${KERNELDIR}/clang/bin:${PATH}"
