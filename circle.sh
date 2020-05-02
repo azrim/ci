@@ -9,6 +9,7 @@
 # Needed exports
 export TELEGRAM_TOKEN=1022672063:AAEQkscD_uo_Ls_PSofE6oCCeE0u7YaumC4
 export ANYKERNEL=$(pwd)/anykernel3
+export COMPILER_TYPE=clang
 
 # Avoid hardcoding things
 KERNEL=SiLonT
@@ -36,17 +37,17 @@ setversioning() {
     	# For staging branch
 	    KERNELTYPE=nightly
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-Nightly-${KERNELFW}-$(date +%y%m%d-%H%M)"
-	    sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
+	    sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/vendor/${DEFCONFIG}
     elif [[ "${PARSE_BRANCH}" =~ "Q"* ]]; then
 	    # For stable (ten) branch
 	    KERNELTYPE=stable
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%y%m%d-%H%M)"
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
+        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/vendor/${DEFCONFIG}
     else
 	    # Dunno when this will happen but we will cover, just in case
 	    KERNELTYPE=${PARSE_BRANCH}
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-${PARSE_BRANCH}-${KERNELFW}-$(date +%y%m%d-%H%M)"
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
+        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/vendor/${DEFCONFIG}
     fi
 
     # Export our new localversion and zipnames
@@ -102,7 +103,7 @@ makekernel() {
 	    DIFF=$(( END - START ))
 	    echo -e "Kernel compilation failed, See buildlog to fix errors"
 	    tg_channelcast "Build for ${DEVICE} (${KERNELFW}) <b>failed</b> in $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)! Check ${CIPROVIDER} for errors!"
-	    tg_groupcast "Build for ${DEVICE} (${KERNELFW}) <b>failed</b> in $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)! Check ${CIPROVIDER} for errors @nysascape! @nysaci"
+	    tg_groupcast "Build for ${DEVICE} (${KERNELFW}) <b>failed</b> in $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)! Check ${CIPROVIDER} for errors @azrim89"
 	    exit 1
     fi
 }
