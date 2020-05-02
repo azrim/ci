@@ -135,11 +135,7 @@ shipkernel() {
 }
 
 # Ship China firmware builds
-setchinafw() {
-    export KERNELFW=China
-    # Pick DSP change
-    git cherry-pick 23dda5dd32a62488862985d7efc9d148e7f527f5
-}
+
 
 # Fix for CI builds running out of memory
 fixcilto() {
@@ -158,10 +154,6 @@ tg_channelcast "Compiler: <code>${COMPILER_STRING}</code>" \
 	"Commit point: <code>${COMMIT_POINT}</code>" \
 	"Clocked at: <code>$(date +%Y%m%d-%H%M)</code>"
 START=$(date +"%s")
-makekernel || exit 1
-shipkernel
-setchinafw
-setversioning
 makekernel || exit 1
 shipkernel
 END=$(date +"%s")
