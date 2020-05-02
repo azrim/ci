@@ -13,7 +13,7 @@ export COMPILER_TYPE=clang
 
 # Avoid hardcoding things
 KERNEL=SiLonT
-DEFCONFIG=ginkgo-perf_defconfig
+DEFCONFIG=vendor/ginkgo-perf_defconfig
 DEVICE=Ginkgo
 CIPROVIDER=CircleCI
 KERNELFW=Global
@@ -37,17 +37,17 @@ setversioning() {
     	# For staging branch
 	    KERNELTYPE=nightly
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-Nightly-${KERNELFW}-$(date +%y%m%d-%H%M)"
-	    sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/vendor/${DEFCONFIG}
+	    sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
     elif [[ "${PARSE_BRANCH}" =~ "Q"* ]]; then
 	    # For stable (ten) branch
 	    KERNELTYPE=stable
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%y%m%d-%H%M)"
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/vendor/${DEFCONFIG}
+        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
     else
 	    # Dunno when this will happen but we will cover, just in case
 	    KERNELTYPE=${PARSE_BRANCH}
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-${PARSE_BRANCH}-${KERNELFW}-$(date +%y%m%d-%H%M)"
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/vendor/${DEFCONFIG}
+        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
     fi
 
     # Export our new localversion and zipnames
