@@ -40,11 +40,11 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/cu
 sed -i 's/plugins=(git)/plugins=(git cp gpg-agent)/g' ~/.zshrc
 
 # Git configurations
-git config --global user.name "nysascape"
-git config --global user.email "jago@nysascape.digital"
+git config --global user.name "azrim"
+git config --global user.email "mirzaspc@gmail.com"
 git config --global credential.helper store
-git config --global commit.gpgsign true
-git config --global user.signingkey "A15571E738CE3CD4"
+#git config --global commit.gpgsign true
+#git config --global user.signingkey "A15571E738CE3CD4"
 
 # GCC 9 is always a good thing to have
 git clone https://github.com/arter97/arm64-gcc --depth=1 ~/gcc9

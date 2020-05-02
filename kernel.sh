@@ -36,12 +36,12 @@ OUTDIR=${ACRUXPATH}/out
 export TELEGRAM_TOKEN=$3
 
 # Some misc enviroment vars
-DEVICE=Platina
+DEVICE=Ginkgo
 CIPROVIDER=Local
 KERNELFW=Global
 
 # Clone our AnyKernel3 branch to KERNELDIR
-git clone https://github.com/nysascape/AnyKernel3 -b master ${ACRUXPATH}/anykernel3
+git clone https://github.com/azrim/kerneltemplate -b dtb ${ACRUXPATH}/anykernel3
 export ANYKERNEL=${ACRUXPATH}/anykernel3
 
 git clone https://github.com/fabianonline/telegram.sh/ telegram
@@ -71,17 +71,17 @@ COMMIT_POINT="$(git log --pretty=format:'%h : %s' -1)"
 if [[ "${PARSE_BRANCH}" =~ "staging"* ]]; then
 	# For staging branch
 	KERNELTYPE=nightly
-	KERNELNAME="Acrux-${KERNELRELEASE}-Nightly-${KERNELFW}-$(date +%Y%m%d-%H%M)"
+	KERNELNAME="SiLonT-${KERNELRELEASE}-Nightly-${KERNELFW}-$(date +%Y%m%d-%H%M)"
 	sed -i "51s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/acrux_defconfig
-elif [[ "${PARSE_BRANCH}" =~ "pie"* ]]; then
+elif [[ "${PARSE_BRANCH}" =~ "Q"* ]]; then
 	# For stable (pie) branch
 	KERNELTYPE=stable
-	KERNELNAME="Acrux-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%Y%m%d-%H%M)"
+	KERNELNAME="SiLonT-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%Y%m%d-%H%M)"
         sed -i "51s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/acrux_defconfig
 else
 	# Dunno when this will happen but we will cover, just in case
 	KERNELTYPE=${PARSE_BRANCH}
-	KERNELNAME="Acrux-${KERNELRELEASE}-${PARSE_BRANCH}-${KERNELFW}-$(date +%Y%m%d-%H%M)"
+	KERNELNAME="SiLonT-${KERNELRELEASE}-${PARSE_BRANCH}-${KERNELFW}-$(date +%Y%m%d-%H%M)"
         sed -i "51s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/acrux_defconfig
 fi
 
@@ -96,8 +96,8 @@ export TEMPZIPNAME="${KERNELNAME}-unsigned.zip"
 export ZIPNAME="${KERNELNAME}.zip"
 
 # Our TG channels
-CI_CHANNEL="-1001420038245"
-TG_GROUP="-1001435271206"
+CI_CHANNEL="-1001156668998"
+TG_GROUP="-1001468720637"
 
 # Send to main group
 tg_groupcast() {
@@ -120,10 +120,10 @@ tg_channelcast() {
 }
 
 # Let's announce our naisu new kernel!
-tg_groupcast "Acrux compilation clocked at $(date +%Y%m%d-%H%M)!"
+tg_groupcast "SiLonT compilation clocked at $(date +%Y%m%d-%H%M)!"
 tg_channelcast "Compiler: <code>${COMPILER_STRING}</code>" \
 	"Device: <b>${DEVICE}</b>" \
-	"Kernel: <code>Acrux, release ${KERNELRELEASE}</code>" \
+	"Kernel: <code>SiLonT, release ${KERNELRELEASE}</code>" \
 	"Branch: <code>${PARSE_BRANCH}</code>" \
 	"Commit point: <code>${COMMIT_POINT}</code>" \
 	"Under <code>${CIPROVIDER}, with $(nproc --all) cores</code>" \
@@ -135,7 +135,7 @@ tg_channelcast "Compiler: <code>${COMPILER_STRING}</code>" \
 PATH="${KERNELDIR}/clang/bin:${PATH}"
 START=$(date +"%s")
 
-make O=out ARCH=arm64 acrux_defconfig
+make O=out ARCH=arm64 ginkgo-perf_defconfig
 make -j"${JOBS}" O=out ARCH=arm64 CROSS_COMPILE="/home/$(whoami)/gcc9/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/home/$(whoami)gcc932/bin/arm-eabi-"
 
 ## Check if compilation is done successfully.
@@ -178,10 +178,10 @@ if [[ "${PARSE_BRANCH}" =~ "staging"* ]]; then
         KERNELTYPE=nightly
         KERNELNAME="Acrux-${KERNELRELEASE}-Nightly-${KERNELFW}-$(date +%Y%m%d-%H%M)"
         sed -i "51s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/acrux_defconfig
-elif [[ "${PARSE_BRANCH}" =~ "pie"* ]]; then
+elif [[ "${PARSE_BRANCH}" =~ "Q"* ]]; then
         # For stable (pie) branch
         KERNELTYPE=stable
-        KERNELNAME="Acrux-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%Y%m%d-%H%M)"
+        KERNELNAME="SiLonT-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%Y%m%d-%H%M)"
         sed -i "51s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/acrux_defconfig
 else
         # Dunno when this will happen but we will cover, just in case
@@ -194,7 +194,7 @@ export KERNELTYPE KERNELNAME
 
 export TEMPZIPNAME="${KERNELNAME}-unsigned.zip"
 export ZIPNAME="${KERNELNAME}.zip"
-make O=out ARCH=arm64 acrux_defconfig
+make O=out ARCH=arm64 ginkgo-perf_defconfig
 make -j"${JOBS}" O=out ARCH=arm64 CROSS_COMPILE="/home/$(whoami)/gcc9/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/home/$(whoami)/gcc932/bin/arm-eabi-"
 
 ## Check if compilation is done successfully.

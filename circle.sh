@@ -7,13 +7,13 @@
 # CI build script
 
 # Needed exports
-export TELEGRAM_TOKEN=${BOT_API_TOKEN}
+export TELEGRAM_TOKEN=1022672063:AAEQkscD_uo_Ls_PSofE6oCCeE0u7YaumC4
 export ANYKERNEL=$(pwd)/anykernel3
 
 # Avoid hardcoding things
-KERNEL=Acrux
-DEFCONFIG=acrux_defconfig
-DEVICE=Platina
+KERNEL=SiLonT
+DEFCONFIG=ginkgo-perf_defconfig
+DEVICE=Ginkgo
 CIPROVIDER=CircleCI
 KERNELFW=Global
 PARSE_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
@@ -21,14 +21,14 @@ PARSE_ORIGIN="$(git config --get remote.origin.url)"
 COMMIT_POINT="$(git log --pretty=format:'%h : %s' -1)"
 
 # Kernel groups
-CI_CHANNEL=-1001420038245
-TG_GROUP=-1001435271206
+CI_CHANNEL=-1001156668998
+TG_GROUP=-1001468720637
 
 # Clang is annoying
 PATH="${KERNELDIR}/clang/bin:${PATH}"
 
 # Kernel revision
-KERNELRELEASE=v2
+KERNELRELEASE=A10
 
 # Function to replace defconfig versioning
 setversioning() {
@@ -37,7 +37,7 @@ setversioning() {
 	    KERNELTYPE=nightly
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-Nightly-${KERNELFW}-$(date +%y%m%d-%H%M)"
 	    sed -i "50s/.*/CONFIG_LOCALVERSION=\"-${KERNELNAME}\"/g" arch/arm64/configs/${DEFCONFIG}
-    elif [[ "${PARSE_BRANCH}" =~ "ten"* ]]; then
+    elif [[ "${PARSE_BRANCH}" =~ "Q"* ]]; then
 	    # For stable (ten) branch
 	    KERNELTYPE=stable
 	    KERNELNAME="${KERNEL}-${KERNELRELEASE}-Release-${KERNELFW}-$(date +%y%m%d-%H%M)"
@@ -77,8 +77,8 @@ tg_channelcast() {
 
 # Fix long kernel strings
 kernelstringfix() {
-    git config --global user.name "nysascape"
-    git config --global user.email "nysadev@raphielgang.org"
+    git config --global user.name "azrim"
+    git config --global user.email "mirzaspc@gmail.com"
     git add .
     git commit -m "stop adding dirty"
 }
@@ -87,7 +87,7 @@ kernelstringfix() {
 makekernel() {
     # Clean any old AnyKernel
     rm -rf ${ANYKERNEL}
-    git clone https://github.com/nysascape/AnyKernel3 -b master anykernel3
+    git clone https://github.com/azrim/kerneltemplate -b dtb anykernel3
     kernelstringfix
     make O=out ARCH=arm64 ${DEFCONFIG}
     if [[ "${COMPILER_TYPE}" =~ "clang"* ]]; then
