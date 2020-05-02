@@ -25,6 +25,11 @@ COMMIT_POINT="$(git log --pretty=format:'%h : %s' -1)"
 CI_CHANNEL=-1001156668998
 TG_GROUP=-1001468720637
 
+KD="$(pwd)"
+git clone https://github.com/kdrag0n/proton-clang --depth=1 "${KD}"/clang
+COMPILER_STRING='Proton Clang (latest)'
+COMPILER_TYPE='clang'
+
 # Clang is annoying
 PATH="${KERNELDIR}/clang/bin:${PATH}"
 
