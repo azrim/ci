@@ -9,7 +9,7 @@
 # Needed exports
 export TELEGRAM_TOKEN=1022672063:AAEQkscD_uo_Ls_PSofE6oCCeE0u7YaumC4
 export ANYKERNEL=$(pwd)/anykernel3
-export COMPILER_TYPE=clang
+
 
 # Avoid hardcoding things
 KERNEL=SiLonT
